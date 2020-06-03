@@ -25,8 +25,8 @@ app.use(bodyParser.json());
 app.use(
     session({
         secret: 'potato',
-        resave: false,
         store: new MongoStore({ mongooseConnection: dbConnection }),
+        resave: false,
         saveUninitialized: false
     })
 );

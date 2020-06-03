@@ -5,11 +5,10 @@ import axios from 'axios';
 
 export default class Navbar extends Component {
 
-    constructor(props) {
-        super(props);
-
-        this.onChangeUserName = this.onChangeUserName.bind(this);
-        this.onChangePassword = this.onChangePassword.bind(this);
+    constructor() {
+        super();
+        
+        this.handleChange = this.handleChange.bind(this)
         this.onChangeErrorMessage = this.onChangeErrorMessage.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
@@ -20,15 +19,9 @@ export default class Navbar extends Component {
         }
     }
 
-    onChangeUserName(event) {
+    handleChange(event) {
         this.setState({
-            userName: event.target.value
-        });
-    }
-
-    onChangePassword(event) {
-        this.setState({
-            passWord: event.target.value
+            [event.target.name]: event.target.value
         });
     }
 
@@ -46,7 +39,7 @@ export default class Navbar extends Component {
             passWord: this.state.passWord
         }
 
-        axios.post('http://localhost:5000/posts/login', loginData)
+        axios.post('/posts/login', loginData)
             .then(res => {
 
                 console.log('login response: ', res);
@@ -86,11 +79,11 @@ export default class Navbar extends Component {
                         <div>
                             <div className="form-group">
                                 <label>Username: </label>
-                                <input type="text" required className="form-control" value={this.state.userName} onChange={this.onChangeUserName}></input>
+                                <input type="text" name="userName" required className="form-control" value={this.state.userName} onChange={this.handleChange}></input>
                             </div>
                             <div>
                                 <label>Password: </label>
-                                <input type="password" required className="form-control" value={this.state.passWord} onChange={this.onChangePassword}></input>
+                                <input type="password" name="passWord" required className="form-control" value={this.state.passWord} onChange={this.handleChange}></input>
                             </div>
                             <div>
                                 <input type="submit" value="Log in!" className="btn" onClick = {this.onSubmit}></input>

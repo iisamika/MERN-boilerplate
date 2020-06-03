@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   getUser() {
-    axios.get('http://localhost:5000/posts/user').then(res => {
+    axios.get('/posts/').then(res => {
       console.log('Get user response: ', res.data);
       if (res.data.user) {
         console.log('Get User: There is a user saved in the server session: ', res.data.user);

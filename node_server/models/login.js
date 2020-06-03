@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
-
+const Schema = mongoose.Schema;
 mongoose.promise = Promise;
 
-const loginSchema = mongoose.Schema({
+const loginSchema = new Schema({
     userName: {
         type: String,
         required: true,

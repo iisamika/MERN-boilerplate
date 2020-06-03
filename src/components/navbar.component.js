@@ -33,6 +33,7 @@ export default class Navbar extends Component {
                 {loggedIn ? (
 
                     <nav>
+                        <Link to='/' className="navbar-brand">Front page</Link>
                         <Link to="/user-info" className="navbar-brand">
                             User Info
                         </Link>

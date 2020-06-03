@@ -26,41 +26,56 @@ router.route('/add').post((req, res) => {
         .catch(() => res.json('Some error!'));
 });
 
-router.post('/login', (req, res, next) => {
-    
-    passport.authenticate('local-login', function (error, user, info) {
-
-        if (error) {
-            res.status(400).json({
-                message: error || "Oops something went wrong!"
-            });
-        }
-
-        req.login(user, function(err)   {
-            res.json(user);
-        });
-    })(req, res, next);
+router.get('/user-info', function(req, res)    {
+    console.log('res.user', req.user._id);
+    _id = req.user._id
+    LoginData.findById({_id}).then(function(data)    {
+        console.log('data', data.userInfo);
+        res.send(data.userInfo);
+    })
 });
 
-router.post('/logout', (req, res) =>    {
-    if(req.userName)    {
+router.post('/update-user-info', function(req, res) {
+    console.log("HELLO!");
+    _id = req.user._id;
+    let userInfo = {
+        firstName: req.body.firstName,
+        lastName: req.body.lastName
+    }
+    console.log(userInfo);
+    LoginData.updateOne({_id}, {$set: {userInfo}}).then(function(data) {
+        console.log({_id}, {$set: userInfo})
+        //res.send(data.userInfo);
+    });
+});
+
+router.post('/login', function (req, res, next) {
+    next()
+    },
+    passport.authenticate('local-login'), (req, res) =>{
+        let userData = {
+            userName: req.user.userName
+        };
+        res.send(userData);
+    }
+);
+
+router.post('/logout', (req, res) => {
+    if (req.userName) {
         req.logout();
         res.send({ msg: 'logging out' });
     }
-    else    {
+    else {
         res.send({ msg: 'no user to logout' });
     }
 });
 
-router.get('/user', (req, res, next) => {
-    console.log('is session user active?:', req.session.user);
-    console.log('user: ', req.user);
-    console.log('get request /user', req.body.userName)
-    
-    if(req.user)    {
+router.get('/', (req, res, next) => {
+
+    if (req.user) {
         res.json({ user: req.user })
     }
-    else{
+    else {
         res.json({ user: null })
     }
 });
